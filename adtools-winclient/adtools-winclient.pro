@@ -9,8 +9,10 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     netclient.cpp \
-    clientnotifierthread.cpp
+    clientnotifierthread.cpp \
+    hostinfo.cpp
 
 HEADERS += \
     netclient.h \
-    clientnotifierthread.h
+    clientnotifierthread.h \
+    hostinfo.h

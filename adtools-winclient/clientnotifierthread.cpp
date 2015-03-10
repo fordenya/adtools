@@ -1,4 +1,5 @@
 #include "clientnotifierthread.h"
+#include "hostinfo.h"
 #include <QtGlobal>
 #include <iostream>
 
@@ -16,13 +17,13 @@ ClientNotifierThread::~ClientNotifierThread(){
 
 void ClientNotifierThread::run(){
     while(mIsRunning){
-        sendNotify("Hello from pc1");
+        sendNotify(HostInfo::getComputerName());
         sleep(qAbs(mSendInterval));
     }
 }
 
 void ClientNotifierThread::sendNotify(QString str){
-    //Need think: if str.length()>512 - do somethink))
+    //Need to think: if str.length()>512 - do somethink))
     //startCriticalSection
     //lock a mutex
     mUdpSocket->writeDatagram(str.toUtf8(), mServerAddress, mServerPort);
