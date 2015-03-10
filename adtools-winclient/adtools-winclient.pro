@@ -1,6 +1,6 @@
-QT       += core network
+QT       += core network gui widgets
 
-CONFIG += qt
+CONFIG += qt c++11
 
 TARGET = adtools-winclient
 TEMPLATE = app
@@ -8,7 +8,9 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    netclient.cpp
+    netclient.cpp \
+    clientnotifierthread.cpp
 
 HEADERS += \
-    netclient.h
+    netclient.h \
+    clientnotifierthread.h
