@@ -1,4 +1,4 @@
-QT += core network
+QT += core network widgets
 
 CONFIG += qt c++11
 
@@ -7,8 +7,8 @@ TARGET = adtools-server
 SOURCES += \
     main.cpp \
     clientnotifymonitor.cpp \
-    datagramreceivethread.cpp
+    datagramreceiver.cpp
 
 HEADERS += \
     clientnotifymonitor.h \
-    datagramreceivethread.h
+    datagramreceiver.h
