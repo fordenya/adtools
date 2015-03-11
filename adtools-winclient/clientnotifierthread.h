@@ -10,7 +10,6 @@ class ClientNotifierThread: QThread{
 public:
     ClientNotifierThread(QString host, int port, QObject *parent=0);
     ~ClientNotifierThread();
-    //void changeHost(QString host, int port);
     void run();
 private:
     void sendNotify(QString str);

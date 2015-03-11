@@ -23,7 +23,7 @@ void ClientNotifierThread::run(){
 }
 
 void ClientNotifierThread::sendNotify(QString str){
-    //Need to think: if str.length()>512 - do somethink))
+    //Need to think: if str.length()>512 - do somethink ))
     //startCriticalSection
     //lock a mutex
     mUdpSocket->writeDatagram(str.toUtf8(), mServerAddress, mServerPort);
