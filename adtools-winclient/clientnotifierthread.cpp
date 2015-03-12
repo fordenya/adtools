@@ -2,6 +2,14 @@
 #include "hostinfo.h"
 #include <QtGlobal>
 #include <iostream>
+#include <initializer_list>
+
+
+QByteArray transform(QStringList strList){
+    const QString separator="%%";
+    return strList.join(separator).toUtf8();
+}
+
 
 ClientNotifierThread::ClientNotifierThread(QString host, int port, QObject *parent)
     :QThread(parent){
@@ -17,18 +25,14 @@ ClientNotifierThread::~ClientNotifierThread(){
 
 void ClientNotifierThread::run(){
     while(mIsRunning){
-        sendNotify(HostInfo::getComputerName());
+        QByteArray preparedData=transform( {HostInfo::getComputerName(), HostInfo::getUserName()} );
+        sendNotify(preparedData);
         sleep(qAbs(mSendInterval));
     }
 }
 
 void ClientNotifierThread::sendNotify(QString str){
     //Need to think: if str.length()>512 - do somethink ))
-    //startCriticalSection
-    //lock a mutex
     mUdpSocket->writeDatagram(str.toUtf8(), mServerAddress, mServerPort);
     std::cout<<"Sended..."<<std::endl;
-    //unlock a mutex
-    //end critical section
 }
-
