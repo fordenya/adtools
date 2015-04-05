@@ -16,7 +16,6 @@ void connectToThreadAndStart(QObject* object, QThread* thread){
 int main(int argc, char** argv){
     QApplication app(argc, argv);
 
-    //qDebug()<<"Hello from main";
     QThread* thread = new QThread;
     ClientNotifierThread notifyTask("192.168.56.1", 9054, 1);
     connectToThreadAndStart(&notifyTask, thread);

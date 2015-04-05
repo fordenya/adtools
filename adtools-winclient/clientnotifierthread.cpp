@@ -19,6 +19,7 @@ ClientNotifierThread::ClientNotifierThread(QString host, int port, int interval,
     mServerAddress_.setAddress(host);
     mServerPort_=port;
     mSendInterval_=interval;
+    mIsRunning_=true;
 }
 
 ClientNotifierThread::~ClientNotifierThread(){
@@ -26,14 +27,12 @@ ClientNotifierThread::~ClientNotifierThread(){
 }
 
 void ClientNotifierThread::process(){
-    qDebug()<<"process()";
     while(mIsRunning_){
         QByteArray preparedData=transform( {HostInfo::getComputerName(), HostInfo::getUserName()} );
         sendNotify(preparedData);
         QThread::sleep(qAbs(mSendInterval_));
     }
     emit finished();
-    qDebug()<<"emited finished()";
 }
 
 void ClientNotifierThread::sendNotify(QString str){
