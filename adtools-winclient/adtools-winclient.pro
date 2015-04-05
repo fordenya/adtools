@@ -12,9 +12,14 @@ SOURCES += \
     hostinfo.cpp \
     #commandmonitor.cpp \
     #datareceiver.cpp
+    systemtray.cpp
 
 HEADERS += \
     clientnotifierthread.h \
     hostinfo.h \
     #commandmonitor.h \
     #datareceiver.h
+    systemtray.h
+
+RESOURCES += \
+    resources.qrc

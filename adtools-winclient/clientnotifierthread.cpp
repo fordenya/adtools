@@ -18,7 +18,7 @@ ClientNotifierThread::ClientNotifierThread(QString host, int port, int interval,
     mUdpSocket_=new QUdpSocket(this);
     mServerAddress_.setAddress(host);
     mServerPort_=port;
-    mSendInterval_=interval;
+    mSendInterval_=qAbs(interval);
     mIsRunning_=true;
 }
 
@@ -30,7 +30,7 @@ void ClientNotifierThread::process(){
     while(mIsRunning_){
         QByteArray preparedData=transform( {HostInfo::getComputerName(), HostInfo::getUserName()} );
         sendNotify(preparedData);
-        QThread::sleep(qAbs(mSendInterval_));
+        QThread::sleep(mSendInterval_);
     }
     emit finished();
 }

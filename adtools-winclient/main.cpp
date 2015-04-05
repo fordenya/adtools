@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "clientnotifierthread.h"
+#include "systemtray.h"
 //#include "commandmonitor.h"
 #include<QThread>
 #include<QDebug>
@@ -20,6 +21,7 @@ int main(int argc, char** argv){
     ClientNotifierThread notifyTask("192.168.56.1", 9054, 1);
     connectToThreadAndStart(&notifyTask, thread);
 
+    SystemTray systemTray;
     //CommandMonitor monitor;
     return app.exec();
 }
