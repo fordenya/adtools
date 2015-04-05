@@ -9,8 +9,12 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     clientnotifierthread.cpp \
-    hostinfo.cpp
+    hostinfo.cpp \
+    #commandmonitor.cpp \
+    #datareceiver.cpp
 
 HEADERS += \
     clientnotifierthread.h \
-    hostinfo.h
+    hostinfo.h \
+    #commandmonitor.h \
+    #datareceiver.h

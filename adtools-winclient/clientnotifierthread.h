@@ -1,24 +1,27 @@
 #ifndef CLIENTNOTIFIERTHREAD_H
 #define CLIENTNOTIFIERTHREAD_H
-#include<QThread>
 #include<QtCore>
 #include<QUdpSocket>
 #include<QString>
 
-class ClientNotifierThread: QThread{
+class ClientNotifierThread: public QObject{
     Q_OBJECT
 public:
-    ClientNotifierThread(QString host, int port, QObject *parent=0);
+    ClientNotifierThread(QString host, int port, int interval=10, QObject *parent=0);
     ~ClientNotifierThread();
-    void run();
+public slots:
+    void process();
+signals:
+    void finished();
 private:
     void sendNotify(QString str);
-    QUdpSocket* mUdpSocket;
-    QHostAddress mServerAddress;
-    qint16 mServerPort;
-    int mSendInterval;
-    //need to protect with mutex
-    bool mIsRunning;
+    QUdpSocket* mUdpSocket_;
+    QHostAddress mServerAddress_;
+    qint16 mServerPort_;
+    int mSendInterval_;
+    // need to protect with mutex,
+    // if other thread will can change current thread state (stop, pause, ...)
+    bool mIsRunning_;
 };
 
 #endif // CLIENTNOTIFIERTHREAD_H
