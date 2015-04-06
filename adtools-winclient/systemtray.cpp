@@ -4,17 +4,20 @@
 
 
 SystemTray::SystemTray(QWidget* wgt): QObject(wgt){
+    QAction* actShowSettings = new QAction("Settings", this);
+    connect(actShowSettings, SIGNAL(triggered()), SIGNAL(showSettings()));
     QAction* actQuit = new QAction("Quit", this);
     connect(actQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
-    mIcon_=QIcon(":/icons/res/netIcon.ico");
-    mTrayIcon_=new QSystemTrayIcon(mIcon_, this);
-    mTrayMenu_=new QMenu();
-    mTrayMenu_->addAction(actQuit);
-    mTrayIcon_->setContextMenu(mTrayMenu_);
-    mTrayIcon_->setToolTip("Adtools Winclient application.");
-    mTrayIcon_->show();
+
+    icon_=QIcon(":/icons/res/netIcon.ico");
+    trayIcon_=new QSystemTrayIcon(icon_, this);
+    trayMenu_=new QMenu();
+    trayMenu_->addAction(actQuit);
+    trayIcon_->setContextMenu(trayMenu_);
+    trayIcon_->setToolTip("Adtools Winclient application.");
+    trayIcon_->show();
 }
 
 SystemTray::~SystemTray(){
-    delete mTrayMenu_;
+    delete trayMenu_;
 }

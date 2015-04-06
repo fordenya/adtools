@@ -12,14 +12,24 @@ SOURCES += \
     hostinfo.cpp \
     #commandmonitor.cpp \
     #datareceiver.cpp
-    systemtray.cpp
+    systemtray.cpp \
+    settings.cpp \
+    mainthread.cpp
 
 HEADERS += \
     clientnotifierthread.h \
     hostinfo.h \
     #commandmonitor.h \
     #datareceiver.h
-    systemtray.h
+    systemtray.h \
+    settings.h \
+    settings_dialog.h \
+    mainthread.h \
+    settingsdata.h
+
 
 RESOURCES += \
     resources.qrc
+
+FORMS += \
+    settings_dialog.ui

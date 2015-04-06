@@ -3,6 +3,7 @@
 #include<QtCore>
 #include<QUdpSocket>
 #include<QString>
+#include<QMutex>
 
 class ClientNotifierThread: public QObject{
     Q_OBJECT
@@ -11,17 +12,20 @@ public:
     ~ClientNotifierThread();
 public slots:
     void process();
+    void finish();
+    void changeInterval(int interval);
 signals:
     void finished();
 private:
     void sendNotify(QString str);
-    QUdpSocket* mUdpSocket_;
-    QHostAddress mServerAddress_;
-    qint16 mServerPort_;
-    int mSendInterval_;
+    QUdpSocket* udpSocket_;
+    QHostAddress serverAddress_;
+    qint16 serverPort_;
+    int sendInterval_;
     // need to protect with mutex,
     // if other thread will can change current thread state (stop, pause, ...)
-    bool mIsRunning_;
+    bool isRunning_;
+    QMutex dataProtectionMutex_;
 };
 
 #endif // CLIENTNOTIFIERTHREAD_H

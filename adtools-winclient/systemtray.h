@@ -9,10 +9,12 @@ class SystemTray : public QObject{
 public:
     SystemTray(QWidget* wgt=0);
     ~SystemTray();
+signals:
+    void showSettings();
 private:
-    QSystemTrayIcon* mTrayIcon_;
-    QMenu* mTrayMenu_;
-    QIcon mIcon_;
+    QSystemTrayIcon* trayIcon_;
+    QMenu* trayMenu_;
+    QIcon icon_;
 };
 
 #endif // SYSTEMTRAY_H

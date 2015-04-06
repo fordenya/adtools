@@ -1,8 +1,7 @@
 #include <QApplication>
-#include "clientnotifierthread.h"
-#include "systemtray.h"
+//#include "clientnotifierthread.h"
+#include "mainthread.h"
 //#include "commandmonitor.h"
-#include<QThread>
 #include<QDebug>
 
 void connectToThreadAndStart(QObject* object, QThread* thread){
@@ -17,11 +16,14 @@ void connectToThreadAndStart(QObject* object, QThread* thread){
 int main(int argc, char** argv){
     QApplication app(argc, argv);
 
-    QThread* thread = new QThread;
+    MainThread mainThread;
+
+
     ClientNotifierThread notifyTask("192.168.56.1", 9054, 1);
     connectToThreadAndStart(&notifyTask, thread);
 
-    SystemTray systemTray;
+
+
     //CommandMonitor monitor;
     return app.exec();
 }
