@@ -14,7 +14,8 @@ SOURCES += \
     #datareceiver.cpp
     systemtray.cpp \
     settings.cpp \
-    mainthread.cpp
+    mainthread.cpp \
+    settingsdata.cpp
 
 HEADERS += \
     clientnotifierthread.h \

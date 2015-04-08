@@ -13,15 +13,16 @@ QByteArray transform(QStringList strList){
 }
 
 
-ClientNotifierThread::ClientNotifierThread(QString host, int port, int interval, QObject *parent)
+ClientNotifierThread::ClientNotifierThread(QString host, int port, int interval, bool status,  QObject *parent)
     :QObject(parent){
     changeInterval(interval);
     udpSocket_=new QUdpSocket(this);
+    //dataProtectionMutex_.lock();
     serverAddress_.setAddress(host);
     serverPort_=port;
-    dataProtectionMutex_.lock();
     isRunning_=true;
-    dataProtectionMutex_.unlock();
+    isSuspended_=!status;
+    //dataProtectionMutex_.unlock();
 }
 
 ClientNotifierThread::~ClientNotifierThread(){
@@ -29,19 +30,13 @@ ClientNotifierThread::~ClientNotifierThread(){
 }
 
 void ClientNotifierThread::process(){
+    timer_=new QTimer;
+    QObject::connect(timer_, SIGNAL(timeout()), this, SLOT(timerOverflow()));
+    connect(this, SIGNAL(finished()), qApp, SLOT(quit()));
     dataProtectionMutex_.lock();
-    bool isRunning=isRunning_;
+    int interval=sendInterval_;
     dataProtectionMutex_.unlock();
-    int interval=0;
-    while(isRunning){
-        QByteArray preparedData=transform( {HostInfo::getComputerName(), HostInfo::getUserName()} );
-        sendNotify(preparedData);
-        dataProtectionMutex_.lock();
-        interval=sendInterval_;
-        dataProtectionMutex_.unlock();
-        QThread::sleep(interval);
-    }
-    emit finished();
+    timer_->start(interval);
 }
 
 void ClientNotifierThread::finish(){
@@ -49,13 +44,43 @@ void ClientNotifierThread::finish(){
     isRunning_=false;
     dataProtectionMutex_.unlock();
     emit finished();
-    quit();
+}
+
+void ClientNotifierThread::changeServerData(QString host, int port){
+    dataProtectionMutex_.lock();
+    serverAddress_.setAddress(host);
+    serverPort_=port;
+    dataProtectionMutex_.unlock();
 }
 
 void ClientNotifierThread::changeInterval(int interval){
     dataProtectionMutex_.lock();
     sendInterval_=interval;
     dataProtectionMutex_.unlock();
+}
+
+void ClientNotifierThread::changeState(bool state){
+    dataProtectionMutex_.lock();
+    isSuspended_=!state;
+    dataProtectionMutex_.unlock();
+}
+
+void ClientNotifierThread::timerOverflow(){
+    if (!isRunning_){
+        emit finished();
+        return;
+    }
+    dataProtectionMutex_.lock();
+    bool suspended=isSuspended_;
+    dataProtectionMutex_.unlock();
+    if (!suspended){
+        QByteArray preparedData=transform( {HostInfo::getComputerName(), HostInfo::getUserName()} );
+        sendNotify(preparedData);
+    }
+    dataProtectionMutex_.lock();
+    int interval=sendInterval_;
+    dataProtectionMutex_.unlock();
+    timer_->start(interval*1000);           // *1000 - miliseconds to seconds
 }
 
 void ClientNotifierThread::sendNotify(QString str){

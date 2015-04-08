@@ -7,10 +7,11 @@
 class SystemTray : public QObject{
     Q_OBJECT
 public:
-    SystemTray(QWidget* wgt=0);
+    SystemTray(QObject* wgt=0);
     ~SystemTray();
 signals:
     void showSettings();
+    void quit();
 private:
     QSystemTrayIcon* trayIcon_;
     QMenu* trayMenu_;
